@@ -1,10 +1,16 @@
 import { Injectable } from '@angular/core';
 import { GifsModule } from '../gifs.module';
 
+
+
+
 @Injectable({providedIn: 'root'})
 export class GifsService{
 
-  public _tagsHistory:string[] = [];
+  private _tagsHistory:string[] = [];
+
+  private apiKey: string = 'C5t0OwrWVMetdbg9StPjtz4v0QSITgVk';
+
 
 
   constructor() { }
@@ -28,7 +34,7 @@ export class GifsService{
     this._tagsHistory.unshift(tag);
 
     // el limite de tag en las busquedas vistas son 10
-    
+
     this._tagsHistory = this.tagsHistory.splice(0,10);
 
   }
