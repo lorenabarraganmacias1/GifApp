@@ -18,7 +18,10 @@ export class GifsService{
 
 
 
-  constructor( private http: HttpClient) { }
+  constructor( private http: HttpClient) {
+    this.loadLocalStore();
+    console.log('locaaaaaaaa')
+  }
 
   get tagsHistory(){
     return [...this._tagsHistory]
@@ -41,8 +44,23 @@ export class GifsService{
     // el limite de tag en las busquedas vistas son 10
 
     this._tagsHistory = this.tagsHistory.splice(0,10);
+    this.SaveLocalStorage();
 
   }
+
+//salvar local store, es decir que la información se guarde en el local store
+  private SaveLocalStorage() :void {
+
+    localStorage.setItem('history', JSON.stringify( this._tagsHistory));
+
+  }
+
+  private loadLocalStore():void{
+
+    if( !localStorage.getItem( 'history' ) ) return;
+    this._tagsHistory = JSON.parse(localStorage.getItem('history')!);
+  }
+
 
 // buscar los valores del tag de lo que la persona esta buscando
     searchTag(tag:string):void {
@@ -56,6 +74,9 @@ export class GifsService{
       .set('q', tag)
 
     this.http.get<SearchResponse>(`${ this.serviceUrl }/search`,{params})
+
+
+    
       .subscribe(resp => {
 
         this.gifList = resp.data;
