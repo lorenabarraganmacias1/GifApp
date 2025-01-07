@@ -23,7 +23,7 @@ export class SearchBoxComponent implements OnInit {
   @ViewChild('txtTagInput')
   public tagInput!: ElementRef<HTMLInputElement>
 
-  constructor(public gifsService: GifsService) { }
+  constructor(private gifsService: GifsService) { }
 
 
   // SearchTag(newTag:string){

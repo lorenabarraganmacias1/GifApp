@@ -1,12 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Gif } from '../../interfaces/gifs.interfaces';
 
 @Component({
   selector: 'Gifs-Card-list',
   templateUrl: './card-list.Component.html'
 })
 
-export class CardListComponent implements OnInit {
-  constructor() { }
+export class CardListComponent  {
 
-  ngOnInit() { }
+@Input()
+public gifs:Gif[]=[
+  
+]
+
+
+
 }

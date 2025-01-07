@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { GifsModule } from '../gifs.module';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Gif, SearchResponse } from '../interfaces/gifs.interfaces';
 
 
 
@@ -7,13 +8,17 @@ import { GifsModule } from '../gifs.module';
 @Injectable({providedIn: 'root'})
 export class GifsService{
 
+  public gifList: Gif[] = [];
+
   private _tagsHistory:string[] = [];
 
   private apiKey: string = 'C5t0OwrWVMetdbg9StPjtz4v0QSITgVk';
 
+  private serviceUrl: string ='https://api.giphy.com/v1/gifs';
 
 
-  constructor() { }
+
+  constructor( private http: HttpClient) { }
 
   get tagsHistory(){
     return [...this._tagsHistory]
@@ -40,12 +45,28 @@ export class GifsService{
   }
 
 // buscar los valores del tag de lo que la persona esta buscando
-  searchTag(tag:string){
+    searchTag(tag:string):void {
     if(tag.length === 0)return;
     this.organizeHistory(tag);
     // this._tagsHistory.unshift(tag);
 
-    console.log(this._tagsHistory)
+    const params = new HttpParams()
+      .set('api_key', this.apiKey)
+      .set('limit','10')
+      .set('q', tag)
+
+    this.http.get<SearchResponse>(`${ this.serviceUrl }/search`,{params})
+      .subscribe(resp => {
+
+        this.gifList = resp.data;
+
+        // console.log(resp);
+      })
+
+
+    // fetch()
+    //    .then(resp => resp.json())
+    //    .then(data => console.log(data));
 
   }
 
